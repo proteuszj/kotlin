@@ -302,8 +302,7 @@ internal fun <E> arrayOfUninitializedElements(size: Int): Array<E> {
     return arrayOfNulls<Any?>(size) as Array<E>
 }
 
-@kotlin.internal.InlineOnly
-private inline fun <T> Array<out T>.subarrayContentToString(offset: Int, length: Int): String {
+private fun <T> Array<out T>.subarrayContentToString(offset: Int, length: Int): String {
     val sb = StringBuilder(2 + length * 3)
     sb.append("[")
     var i = 0
@@ -316,8 +315,7 @@ private inline fun <T> Array<out T>.subarrayContentToString(offset: Int, length:
     return sb.toString()
 }
 
-@kotlin.internal.InlineOnly
-private inline fun <T> Array<T>.subarrayContentHashCode(offset: Int, length: Int): Int {
+private fun <T> Array<T>.subarrayContentHashCode(offset: Int, length: Int): Int {
     var result = 1
     var i = 0
     while (i < length) {
@@ -328,8 +326,7 @@ private inline fun <T> Array<T>.subarrayContentHashCode(offset: Int, length: Int
     return result
 }
 
-@kotlin.internal.InlineOnly
-private inline fun <T> Array<T>.subarrayContentEquals(offset: Int, length: Int, other: List<*>): Boolean {
+private fun <T> Array<T>.subarrayContentEquals(offset: Int, length: Int, other: List<*>): Boolean {
     if (length != other.size) return false
     var i = 0
     while (i < length) {
@@ -344,8 +341,7 @@ internal fun <T> Array<T>.copyOfUninitializedElements(newSize: Int): Array<T> {
     return copyOf(newSize) as Array<T>
 }
 
-@kotlin.internal.InlineOnly
-internal inline fun <E> Array<E>.resetAt(index: Int) {
+internal fun <E> Array<E>.resetAt(index: Int) {
     @Suppress("UNCHECKED_CAST")
     (this as Array<Any?>)[index] = null
 }
