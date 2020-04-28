@@ -575,27 +575,6 @@ internal class HashMapValues<V> internal constructor(
     override fun clear() = backing.clear()
     override fun iterator(): MutableIterator<V> = backing.valuesIterator()
     override fun remove(element: V): Boolean = backing.removeValue(element)
-
-    override fun equals(other: Any?): Boolean =
-        other === this ||
-                other is Collection<*> &&
-                contentEquals(other)
-
-    override fun hashCode(): Int {
-        var result = 1
-        val it = iterator()
-        while (it.hasNext()) {
-            result = result * 31 + it.next().hashCode()
-        }
-        return result
-    }
-
-    // ---------------------------- private ----------------------------
-
-    private fun contentEquals(other: Collection<*>): Boolean {
-        @Suppress("UNCHECKED_CAST") // todo: figure out something better
-        return size == other.size && containsAll(other as Collection<V>)
-    }
 }
 
 internal class HashMapEntrySet<K, V> internal constructor(
