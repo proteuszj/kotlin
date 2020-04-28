@@ -28,6 +28,7 @@ interface KotlinTargetComponent : SoftwareComponent {
 interface KotlinTarget : Named, HasAttributes {
     val targetName: String
     val disambiguationClassifier: String? get() = targetName
+    val isDisambiguationClassifierTrimmed: Boolean
 
     val platformType: KotlinPlatformType
 
