@@ -51,6 +51,8 @@ class ContainerBuilderTest {
         }
 
         compare(listOf('a', 'b', 'c', 'd'), y) { listBehavior() }
+        compare(listOf('a', 'b', 'c', 'd'), y.subList(0, 4)) { listBehavior() }
+        compare(listOf('b', 'c'), y.subList(1, 4).subList(0, 2)) { listBehavior() }
 
         assertEquals(listOf(1), buildList(0) { add(1) })
         assertFailsWith<IllegalArgumentException> {
@@ -61,6 +63,37 @@ class ContainerBuilderTest {
         for (operation in mutableListOperations('a')) {
             assertFailsWith<UnsupportedOperationException> { y.operation() }
             assertFailsWith<UnsupportedOperationException> { y.subList(1, 3).operation() }
+        }
+    }
+
+    @Test
+    fun listBuilderSubList() {
+        buildList<Char> {
+            addAll(listOf('a', 'b', 'c', 'd', 'e'))
+
+            val subList = subList(1, 4)
+            compare(listOf('a', 'b', 'c', 'd', 'e'), this) { listBehavior() }
+            compare(listOf('b', 'c', 'd'), subList) { listBehavior() }
+
+            set(2, '1')
+            compare(listOf('a', 'b', '1', 'd', 'e'), this) { listBehavior() }
+            compare(listOf('b', '1', 'd'), subList) { listBehavior() }
+
+            subList[2] = '2'
+            compare(listOf('a', 'b', '1', '2', 'e'), this) { listBehavior() }
+            compare(listOf('b', '1', '2'), subList) { listBehavior() }
+
+            subList.add('3')
+            compare(listOf('a', 'b', '1', '2', '3', 'e'), this) { listBehavior() }
+            compare(listOf('b', '1', '2', '3'), subList) { listBehavior() }
+
+            val subSubList = subList.subList(2, 4)
+            // buffer reallocation should happen
+            repeat(20) { subSubList.add('x') }
+
+            compare("ab123${"x".repeat(20)}e".toList(), this) { listBehavior() }
+            compare("b123${"x".repeat(20)}".toList(), subList) { listBehavior() }
+            compare("23${"x".repeat(20)}".toList(), subSubList) { listBehavior() }
         }
     }
 
