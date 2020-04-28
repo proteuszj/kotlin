@@ -197,7 +197,8 @@ open class KotlinJsProjectExtension :
         level = DeprecationLevel.HIDDEN
     )
     fun getTargets() =
-        target.project.container(KotlinTarget::class.java).apply { add(target) }
+        _target?.project?.container(KotlinTarget::class.java)
+            ?.apply { add(_target!!) }
 }
 
 open class KotlinCommonProjectExtension : KotlinSingleJavaTargetExtension() {
